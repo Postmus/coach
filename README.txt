@@ -1,7 +1,7 @@
 COACH Risk Engine
 =================
 
-The COACH Risk Engine is a patient-level simulation model for predicting survival and hospitalization of patients with heart failure.
+COACH Risk Engine is a patient-level simulation model for predicting survival and hospitalization in patients with heart failure.
 
 Requirements
 ------------
