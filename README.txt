@@ -30,6 +30,6 @@ Building from source
 
 To compile COACH Risk Engine from source, the following libraries are required:
 - JfreeChart 1.0.13
-- Jcommon 1.0.13    
+- Jcommon 1.0.16    
 
 
