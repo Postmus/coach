@@ -12,6 +12,7 @@ Versions
 --------
 
 1.0: Initial release.
+1.1: Added 2 new measures of recurrent HF hospitalization
 
 Copyright & copying permission
 ------------------------------
