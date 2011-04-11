@@ -1,6 +1,7 @@
 package coach;
 
 import java.awt.*;
+
 import javax.swing.*;
 
 import org.jfree.chart.ChartFactory;
@@ -13,14 +14,13 @@ import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.data.Range;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.DefaultXYDataset;
 
 public class ResultsPanel extends JPanel {
 	
-	public JLabel medianSurvival;
-	public JLabel medianHosp;
-	public JLabel IRhosp;
+	private JLabel medianHosp;
 	private XYPlot JFreeChartSurvivalCurve;
 	private CategoryPlot JFreeChartHistogram;
 			
@@ -30,9 +30,9 @@ public class ResultsPanel extends JPanel {
 				
 		double[][] series1 = {{0.0,3.0,6.0,9.0,12.0,15.0,18.0},{1.0,0.89,0.81,0.75,0.70,0.65,0.60}};
 		DefaultXYDataset dataset3 = new DefaultXYDataset();
-		dataset3.addSeries("survProb",series1);
-			
-		JFreeChart chart3 = ChartFactory.createXYLineChart(null, "Time (months)", "Probability of survival", dataset3, PlotOrientation.VERTICAL, false, false, false);
+		dataset3.addSeries("All-cause mortality",series1);
+		dataset3.addSeries("HF-related hospitalization",series1);
+		JFreeChart chart3 = ChartFactory.createXYLineChart(null, "Time (months)", "Cumulative incidence", dataset3, PlotOrientation.VERTICAL, true, false, false);
 		chart3.setBackgroundPaint(null);
 		JFreeChartSurvivalCurve = (XYPlot) chart3.getPlot();
 		XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) JFreeChartSurvivalCurve.getRenderer();
@@ -44,8 +44,10 @@ public class ResultsPanel extends JPanel {
 		ChartPanel panel3 = new ChartPanel(chart3);
 		ValueAxis rangeAxis = JFreeChartSurvivalCurve.getRangeAxis();
 		rangeAxis.setLabelFont(new Font("TimesNewRoman", Font.PLAIN, 12));
-		panel3.setBorder(BorderFactory.createTitledBorder("Survival curve"));
-				
+		Range defaultRange = new Range(0,0.5); 
+		rangeAxis.setDefaultAutoRange(defaultRange);
+		panel3.setBorder(BorderFactory.createTitledBorder("Cumulative incidence curves"));
+		
 		// Create a JFreeChart BarChart for the hospitalization frequency function
 		
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
@@ -69,7 +71,7 @@ public class ResultsPanel extends JPanel {
 		JFreeChartHistogram = (CategoryPlot) chart.getPlot();
 				
 		ChartPanel panel = new ChartPanel(chart);
-		panel.setBorder(BorderFactory.createTitledBorder("Number of re-admissions at 18 months after hospital discharge"));
+		panel.setBorder(BorderFactory.createTitledBorder("Recurrent hospitalization at 18 months after index discharge"));
 		JFreeChartHistogram = (CategoryPlot) chart.getPlot();
 		CategoryAxis categoryAxis = JFreeChartHistogram.getDomainAxis();
 		categoryAxis.setLabelFont(new Font("TimesNewRoman", Font.PLAIN, 12));
@@ -77,28 +79,18 @@ public class ResultsPanel extends JPanel {
 		rangeAxis2.setLabelFont(new Font("TimesNewRoman", Font.PLAIN, 12));
 
 		// Survival curve Panel
-		
 		JPanel survival = new JPanel();
 		survival.setLayout(new BorderLayout());
 		survival.add(panel3, BorderLayout.CENTER);
-		medianSurvival = new JLabel("Median: ");
-		medianSurvival.setBorder(BorderFactory.createTitledBorder("Life expectancy"));
 		
 		// Hospitalization Panel
-		
 		JPanel hospitalization = new JPanel();
 		hospitalization.setLayout(new BorderLayout());
 		hospitalization.add(panel, BorderLayout.CENTER);
-		JPanel simulationResults = new JPanel();
 		
-		medianHosp = new JLabel("Median: ");
-		IRhosp = new JLabel("Interquartile range: ");
-		simulationResults.setLayout(new BorderLayout());
-		simulationResults.add(medianHosp, BorderLayout.CENTER);
-		simulationResults.add(IRhosp, BorderLayout.SOUTH);
-		simulationResults.setBorder(BorderFactory.createTitledBorder("Days lost due to hospitalization because of HF"));
-		//hospitalization.add(simulationResults, BorderLayout.SOUTH);
-				
+		medianHosp = new JLabel("Expected number of days lost due to HF hospitalization: ");
+		hospitalization.add(medianHosp, BorderLayout.SOUTH);
+									
 		// Add both panels together
 		
 		this.setLayout(new GridLayout(0,2,5,5));
@@ -108,10 +100,12 @@ public class ResultsPanel extends JPanel {
 		
 	}
 	
-	public void updateJFreeChartSurvival(double[] survProb) {
-		double[][] newSeries = {{0.0,3.0,6.0,9.0,12.0,15.0,18.0},survProb};
+	public void updateJFreeChartSurvival(double[] survProb, double[] hospProb) {
+		double[][] newSeries1 = {{0.0,3.0,6.0,9.0,12.0,15.0,18.0},survProb};
+		double[][] newSeries2 = {{0.0,3.0,6.0,9.0,12.0,15.0,18.0},hospProb};
 		DefaultXYDataset newDataset = new DefaultXYDataset();
-		newDataset.addSeries("survProb",newSeries);
+		newDataset.addSeries("All-cause mortality",newSeries1);
+		newDataset.addSeries("HF-related hospitalization",newSeries2);
 		this.JFreeChartSurvivalCurve.setDataset(newDataset);
 	}
 	
@@ -124,5 +118,10 @@ public class ResultsPanel extends JPanel {
 		newDataset.addValue(histProb[4], "Row 1", ">3");
 		this.JFreeChartHistogram.setDataset(newDataset);
 	}
+	
+	public void updateDaysLost(long l) {
+		this.medianHosp.setText("Expected number of days lost due to HF-related hospitalization: " + l + " days");
+	}
+	
 	
 }
