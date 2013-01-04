@@ -12,7 +12,7 @@ public class InputPanel extends JPanel implements ItemListener, ActionListener, 
 	private JCheckBox mi, stroke, diabetes, afib, peripheral;
 	private JComboBox sex, previousAdm;
 	private JSpinner ageSpinner, probnpSpinner, sbpSpinner, dbpSpinner, egfrSpinner, naSpinner;
-	private JSpinner lvefSpinner, hemoglobinSpinner;
+	private JSpinner lvefSpinner;
 	private CoachRiskEngine riskEngine;
 	
 	public InputPanel(CoachRiskEngine re) {
@@ -122,18 +122,7 @@ public class InputPanel extends JPanel implements ItemListener, ActionListener, 
 			ftf6.setColumns(5); //specify more width than we need
 		    ftf6.setHorizontalAlignment(JTextField.LEFT);
 		}
-		
-		SpinnerModel model7 = new SpinnerNumberModel(132, 92, 172, 1);
-		Patient.hemoglobin=132;
-		hemoglobinSpinner = new JSpinner(model7);		
-        hemoglobinSpinner.addChangeListener(this);
-		//Tweak the spinner's formatted text field.
-		JFormattedTextField ftf7 = getTextField(hemoglobinSpinner);
-		if (ftf7 != null ) {
-			ftf7.setColumns(5); //specify more width than we need
-		    ftf7.setHorizontalAlignment(JTextField.LEFT);
-		}
-		
+
 		SpinnerModel model8 = new SpinnerNumberModel(34, 10, 70, 1);
 		Patient.lvef = 34;
 		lvefSpinner = new JSpinner(model8);		
@@ -156,7 +145,6 @@ public class InputPanel extends JPanel implements ItemListener, ActionListener, 
 		JLabel genderLabel = new JLabel("Sex:");
 		JLabel sbpLabel = new JLabel("Systolic blood pressure (mm Hg):");
 		JLabel dbpLabel = new JLabel("Diastolic blood pressure (mm Hg):");
-		JLabel hemoglobinLabel = new JLabel("Hemoglobin (g/L):");
 		JLabel lvefLabel = new JLabel("Left ventricular ejection fraction (%):");
 		
 		
@@ -260,23 +248,15 @@ public class InputPanel extends JPanel implements ItemListener, ActionListener, 
 		add(naLabel,c);
 		
 		c.gridx = 2;
-		c.gridy = 1;
-		c.gridheight = 1;
-		c.gridwidth = 1;
-		c.insets = new Insets(5,5,10,5);
-		c.anchor = GridBagConstraints.WEST;
-		add(egfrLabel,c);
-		
-		c.gridx = 2;
 		c.gridy = 0;
 		c.gridheight = 1;
 		c.gridwidth = 1;
 		c.insets = new Insets(5,5,10,5);
 		c.anchor = GridBagConstraints.WEST;
-		add(hemoglobinLabel,c);
-		
+		add(egfrLabel,c);
+
 		c.gridx = 2;
-		c.gridy = 3;
+		c.gridy = 1;
 		c.gridheight = 1;
 		c.gridwidth = 1;
 		c.insets = new Insets(5,5,10,5);
@@ -284,7 +264,7 @@ public class InputPanel extends JPanel implements ItemListener, ActionListener, 
 		add(previousAdmLabel,c);	
 		
 		c.gridx = 2;
-		c.gridy = 4;
+		c.gridy = 3;
 		c.gridheight = 1;
 		c.gridwidth = 1;
 		c.insets = new Insets(5,5,10,5);
@@ -302,7 +282,7 @@ public class InputPanel extends JPanel implements ItemListener, ActionListener, 
 		add(naSpinner,c);
 		
 		c.gridx = 3;
-		c.gridy = 1;
+		c.gridy = 0;
 		c.gridheight = 1;
 		c.gridwidth = 1;
 		c.insets = new Insets(5,5,5,10);
@@ -310,15 +290,7 @@ public class InputPanel extends JPanel implements ItemListener, ActionListener, 
 		add(egfrSpinner,c);
 		
 		c.gridx = 3;
-		c.gridy = 0;
-		c.gridheight = 1;
-		c.gridwidth = 1;
-		c.insets = new Insets(5,5,5,10);
-		c.fill = GridBagConstraints.BOTH;
-		add(hemoglobinSpinner,c);
-		
-		c.gridx = 3;
-		c.gridy = 3;
+		c.gridy = 1;
 		c.gridheight = 1;
 		c.gridwidth = 1;
 		c.insets = new Insets(5,5,5,10);
@@ -326,7 +298,7 @@ public class InputPanel extends JPanel implements ItemListener, ActionListener, 
 		add(previousAdm,c);
 		
 		c.gridx = 3;
-		c.gridy = 4;
+		c.gridy = 3;
 		c.gridheight = 1;
 		c.gridwidth = 1;
 		c.insets = new Insets(5,5,5,10);
@@ -376,9 +348,6 @@ public class InputPanel extends JPanel implements ItemListener, ActionListener, 
         	}
         	else if (e.getSource()==egfrSpinner) {
         		Patient.egfr = ((SpinnerNumberModel)(model)).getNumber().intValue();
-        	}
-        	else if (e.getSource()==hemoglobinSpinner) {
-        		Patient.hemoglobin = ((SpinnerNumberModel)(model)).getNumber().intValue();
         	}
         	else if (e.getSource()==lvefSpinner) {
         		Patient.lvef = ((SpinnerNumberModel)(model)).getNumber().intValue();

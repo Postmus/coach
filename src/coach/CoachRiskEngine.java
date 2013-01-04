@@ -17,7 +17,7 @@ public class CoachRiskEngine extends JFrame implements ActionListener {
 		
 		this.setSize(860,600);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setTitle("COACH Risk Engine v1.1");
+		this.setTitle("COACH Risk Engine v2.0");
 		this.setLocation(100,100);
 		inputs = new InputPanel(this);
 		this.add(inputs, BorderLayout.NORTH);
@@ -57,7 +57,7 @@ public class CoachRiskEngine extends JFrame implements ActionListener {
 		int[] endpointHind = new int[iterations];
 		
 		while (i<iterations) {
-			output = Patient.simulationResults(Patient.peripheral, Patient.age, Patient.sex, Patient.diabetes, Patient.afib, Patient.mi, Patient.stroke, Patient.probnp, Patient.egfr, Patient.na, Patient.previousAdm, Patient.sbp, Patient.dbp, Patient.lvef, Patient.hemoglobin);
+			output = Patient.simulationResults(Patient.peripheral, Patient.age, Patient.sex, Patient.diabetes, Patient.afib, Patient.mi, Patient.stroke, Patient.probnp, Patient.egfr, Patient.na, Patient.previousAdm, Patient.sbp, Patient.dbp, Patient.lvef);
 			endpointD[i]=output[0];
 			hospitalization[i]=output[1];
 			numHosp[i]=output[2];
@@ -189,10 +189,10 @@ public class CoachRiskEngine extends JFrame implements ActionListener {
 		
 		if (e.getSource()==aboutItem) {
 			JOptionPane.showMessageDialog(this,
-				"COACH Risk Engine v1.1 \n" +
-				"\uu00a9 2010-2011, Douwe Postmus (d.postmus@epi.umcg.nl) \n \n" + 
+				"COACH Risk Engine v2.0 \n" +
+				"\uu00a9 2010-2013, Douwe Postmus (d.postmus@umcg.nl) \n \n" + 
 				"This software incorporates JFreeChart, \n" + 
-				"\uu00a9 2000-2009 by Object Refinery Limited and Contributors",
+				"\uu00a9 2000-2013 by Object Refinery Limited and Contributors",
 				"About COACH Risk Engine",
 				JOptionPane.INFORMATION_MESSAGE);
 		}	

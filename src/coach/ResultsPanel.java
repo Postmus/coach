@@ -31,8 +31,8 @@ public class ResultsPanel extends JPanel {
 		double[][] series1 = {{0.0,3.0,6.0,9.0,12.0,15.0,18.0},{1.0,0.89,0.81,0.75,0.70,0.65,0.60}};
 		DefaultXYDataset dataset3 = new DefaultXYDataset();
 		dataset3.addSeries("All-cause mortality",series1);
-		dataset3.addSeries("HF-related hospitalization",series1);
-		JFreeChart chart3 = ChartFactory.createXYLineChart(null, "Time (months)", "Cumulative incidence", dataset3, PlotOrientation.VERTICAL, true, false, false);
+		//dataset3.addSeries("HF-related hospitalization",series1);
+		JFreeChart chart3 = ChartFactory.createXYLineChart(null, "Time (months)", "Cumulative incidence", dataset3, PlotOrientation.VERTICAL, false, false, false);
 		chart3.setBackgroundPaint(null);
 		JFreeChartSurvivalCurve = (XYPlot) chart3.getPlot();
 		XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) JFreeChartSurvivalCurve.getRenderer();
@@ -46,7 +46,7 @@ public class ResultsPanel extends JPanel {
 		rangeAxis.setLabelFont(new Font("TimesNewRoman", Font.PLAIN, 12));
 		Range defaultRange = new Range(0,0.5); 
 		rangeAxis.setDefaultAutoRange(defaultRange);
-		panel3.setBorder(BorderFactory.createTitledBorder("Cumulative incidence curves"));
+		panel3.setBorder(BorderFactory.createTitledBorder("All-cause mortality"));
 		
 		// Create a JFreeChart BarChart for the hospitalization frequency function
 		
@@ -89,7 +89,7 @@ public class ResultsPanel extends JPanel {
 		hospitalization.add(panel, BorderLayout.CENTER);
 		
 		medianHosp = new JLabel("Expected number of days lost due to HF hospitalization: ");
-		hospitalization.add(medianHosp, BorderLayout.SOUTH);
+		//hospitalization.add(medianHosp, BorderLayout.SOUTH);
 									
 		// Add both panels together
 		
@@ -102,10 +102,10 @@ public class ResultsPanel extends JPanel {
 	
 	public void updateJFreeChartSurvival(double[] survProb, double[] hospProb) {
 		double[][] newSeries1 = {{0.0,3.0,6.0,9.0,12.0,15.0,18.0},survProb};
-		double[][] newSeries2 = {{0.0,3.0,6.0,9.0,12.0,15.0,18.0},hospProb};
+		//double[][] newSeries2 = {{0.0,3.0,6.0,9.0,12.0,15.0,18.0},hospProb};
 		DefaultXYDataset newDataset = new DefaultXYDataset();
-		newDataset.addSeries("All-cause mortality",newSeries1);
-		newDataset.addSeries("HF-related hospitalization",newSeries2);
+		newDataset.addSeries("All-cause mortality", newSeries1);
+		//newDataset.addSeries("HF-related hospitalization",newSeries2);
 		this.JFreeChartSurvivalCurve.setDataset(newDataset);
 	}
 	

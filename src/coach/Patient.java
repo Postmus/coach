@@ -5,10 +5,10 @@ import java.lang.Math;
 public class Patient {
 
 	public static int mi, stroke, diabetes, afib, peripheral, sbp, dbp, egfr;
-	public static int sex, previousAdm,probnp, na, lvef, hemoglobin;
+	public static int sex, previousAdm,probnp, na, lvef;
 	public static double age;
 
-	public static int[] simulationResults(int peripheral, double age, int sex, int diabetes, int afib, int mi, int stroke, int probnp, int egfr, int na, int previousAdm, int sbp, int dbp, int lvef, int hemoglobin) {
+	public static int[] simulationResults(int peripheral, double age, int sex, int diabetes, int afib, int mi, int stroke, int probnp, int egfr, int na, int previousAdm, int sbp, int dbp, int lvef) {
 
 		int doodInd, endpointD, daysHospital, agePI, randNum1, numHosp, endpointH, endpointHind;
 		double probDead, ageP, randNum2;
@@ -27,7 +27,7 @@ public class Patient {
 		output = new int[5];
 		while (doodInd==0) {
 
-			randNum1 = (int) (Patient.equation1(afib, diabetes, stroke, mi, peripheral, na, egfr, probnp, previousAdm, sex, hemoglobin, sbp, dbp) + 1);
+			randNum1 = (int) (Patient.equation1(afib, diabetes, stroke, mi, peripheral, na, egfr, probnp, previousAdm, sex, sbp, dbp) + 1);
 			ageP = ageP + randNum1/365;
 			if (numHosp==0) {
 				endpointH = endpointH + randNum1;
@@ -56,7 +56,7 @@ public class Patient {
 
 				// Determine next state (i.e. dead or discharged)
 				
-				probDead = Patient.equation4(diabetes, hemoglobin, probnp);
+				probDead = Patient.equation4(diabetes, dbp, probnp);
 				randNum2 = Math.random();
 				if (randNum2<=probDead) {		// Next state is dead
 					doodInd = 1;
@@ -74,11 +74,11 @@ public class Patient {
 
 	}
 
-	private static double equation1(int afib, int diabetes, int stroke, int mi, int peripheral, int na, int egfr, int probnp, int previousAdm, int sex, int hemoglobin, int sbp, int dbp) {
+	private static double equation1(int afib, int diabetes, int stroke, int mi, int peripheral, int na, int egfr, int probnp, int previousAdm, int sex, int sbp, int dbp) {
 
 		double rho, lambda, uniform;
-		rho = 0.712;
-		lambda = 1.046 - 0.308*sex + 0.303*mi + 0.160*afib + 0.263*stroke + 0.198*peripheral - 0.039*na + 0.197*diabetes + 0.668*previousAdm - 0.012*egfr + 0.068*Math.log(probnp) - 0.006*hemoglobin - 0.005*(sbp-dbp);
+		rho = 0.719;
+		lambda = 0.816 - 0.287*sex + 0.296*mi + 0.172*afib + 0.275*stroke + 0.177*peripheral - 0.036*na + 0.222*diabetes + 0.648*previousAdm - 0.013*egfr + 0.073*Math.log(probnp) -0.015*dbp - 0.005*(sbp-dbp);
 		lambda = Math.exp(lambda);
 		uniform = Math.random();
 		return Math.pow((-1/lambda * (java.lang.Math.log(1 - uniform))),(1/rho));
@@ -88,8 +88,8 @@ public class Patient {
 	private static double equation2(int age , int stroke, int peripheral, int lvef, int egfr) {
 
 		double rho, lambda, alpha, beta, uniform;
-		rho = 1.934;
-		lambda = Math.exp(-6.356 + 0.014*age + 0.483*stroke -0.376*peripheral + 0.012*lvef + 0.015*egfr);
+		rho = 1.931;
+		lambda = Math.exp(-6.298 + 0.014*age + 0.483*stroke -0.374*peripheral + 0.014*lvef + 0.012*egfr);
 		beta = rho;
 		alpha = Math.pow((1/lambda),(1/rho)); // Median of the log-logistic distribution
 		uniform = Math.random();
@@ -100,15 +100,15 @@ public class Patient {
 	private static double equation3(int age, int sex, int sbp, int dbp, int previous, int probnp) {
 
 		double expRisk;
-		expRisk = Math.exp(-4.199 + 0.048*age - 0.540*sex - 0.018*(sbp-dbp) - 0.359*previous + 0.181*Math.log(probnp));
+		expRisk = Math.exp(-4.206 + 0.047*age - 0.534*sex - 0.018*(sbp-dbp) - 0.362*previous + 0.186*Math.log(probnp));
 		return expRisk/(1 + expRisk);
 
 	}
 
-	private static double equation4(int diabetes, int hemoglobin, int probnp) {
+	private static double equation4(int diabetes, int dbp, int probnp) {
 
 		double expRisk;
-		expRisk = Math.exp(-2.030 + 0.531*diabetes - 0.017*hemoglobin + 0.288*Math.log(probnp));
+		expRisk = Math.exp(-3.092 + 0.649*diabetes - 0.025*dbp + 0.348*Math.log(probnp));
 		return expRisk/(1 + expRisk);
 
 	}
