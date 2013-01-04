@@ -12,12 +12,13 @@ Versions
 --------
 
 1.0: Initial release.
-1.1: Added 2 new measures of recurrent HF hospitalization
+1.1: Added 2 new measures of recurrent HF hospitalization.
+2.0: Upgraded the Java implementation to the final version of the model as published in European Journal of Heart Failure.
 
 Copyright & copying permission
 ------------------------------
 
-Copyright 2010 Douwe Postmus
+Copyright 2010-2013 Douwe Postmus
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
@@ -30,7 +31,7 @@ Building from source
 --------------------
 
 To compile COACH Risk Engine from source, the following libraries are required:
-- JfreeChart 1.0.13
-- Jcommon 1.0.16    
+- JfreeChart 1.0.14
+- Jcommon 1.0.17    
 
 
