@@ -1,5 +1,3 @@
-// FIXME: This file still has to be updated!
-
 package coach;
 
 import java.lang.Math;
@@ -12,7 +10,7 @@ public class Patient {
 
 	public static int[] simulationResults(int peripheral, double age, int sex, int diabetes, int afib, int mi, int stroke, int probnp, int egfr, int na, int previousAdm, int sbp, int dbp, int lvef, int hemoglobin) {
 
-		int doodInd, endpointD, daysHospital, agePI, randNum1, numHosp;
+		int doodInd, endpointD, daysHospital, agePI, randNum1, numHosp, endpointH, endpointHind;
 		double probDead, ageP, randNum2;
 		int[] output;
 		double maxTimeSim;
@@ -22,13 +20,18 @@ public class Patient {
 		agePI = (int) (age);
 		doodInd = 0;
 		endpointD = 0;
+		endpointH = 0;
+		endpointHind = 0;
 		daysHospital = 0;
 		numHosp = 0;
-		output = new int[3];
+		output = new int[5];
 		while (doodInd==0) {
 
 			randNum1 = (int) (Patient.equation1(afib, diabetes, stroke, mi, peripheral, na, egfr, probnp, previousAdm, sex, hemoglobin, sbp, dbp) + 1);
 			ageP = ageP + randNum1/365;
+			if (numHosp==0) {
+				endpointH = endpointH + randNum1;
+			}
 			endpointD = endpointD + randNum1;
 			agePI = (int) (ageP);
 			previousAdm = 1;
@@ -45,8 +48,9 @@ public class Patient {
 				ageP = ageP + randNum1/365;
 				if (endpointD<=maxTimeSim) {
 					numHosp = numHosp + 1;
+					endpointHind = 1;
+					daysHospital = daysHospital + randNum1;
 				}
-				daysHospital = daysHospital + randNum1;
 				endpointD = endpointD + randNum1;
 				agePI = (int) (ageP);
 
@@ -63,6 +67,8 @@ public class Patient {
 		output[0]=endpointD;
 		output[1]=daysHospital;
 		output[2]=numHosp;
+		output[3]=endpointH;
+		output[4]=endpointHind;
 
 		return output;
 
